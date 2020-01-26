@@ -1,2 +1,2 @@
-# Meal-Friend
-Alexa skill for kids
+# Meal-friend
+Meal friend - Alexa skill for kids

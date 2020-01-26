@@ -1,0 +1,90 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "meal friend",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "HelloWorldIntent",
+          "slots": [],
+          "samples": [
+            "hello",
+            "how are you",
+            "say hi world",
+            "say hi",
+            "hi",
+            "say hello world",
+            "say hello"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "WhichFoodIntent",
+          "slots": [],
+          "samples": [
+            "rice",
+            "chapati",
+            "i m going to have noodles",
+            "I am going to have pasta"
+          ]
+        },
+        {
+          "name": "HappyIntent",
+          "slots": [],
+          "samples": [
+            "yeah",
+            "ok",
+            "waiting for the next byte",
+            "finished",
+            "had",
+            "i had",
+            "i am having",
+            "yes"
+          ]
+        },
+        {
+          "name": "TryAgainIntent",
+          "slots": [],
+          "samples": [
+            "not interested",
+            "i dont want to have",
+            "no"
+          ]
+        },
+        {
+          "name": "FinishedIntent",
+          "slots": [],
+          "samples": [
+            "i am full",
+            "i had everything",
+            "i finished my meal"
+          ]
+        },
+        {
+          "name": "WaitingIntent",
+          "slots": [],
+          "samples": [
+            "wait for me",
+            "you are so fast"
+          ]
+        }
+      ],
+      "types": []
+    }
+  },
+  "version": "16"
+}
