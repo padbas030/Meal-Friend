@@ -23,23 +23,9 @@ from ask_sdk_core.skill_builder import CustomSkillBuilder
 #crowd applause <audio src="soundbank://soundlibrary/human/amzn_sfx_crowd_applause_01"/>
 #Elephant Sound <audio src="soundbank://soundlibrary/animals/amzn_sfx_elephant_05"/>
 #chew sound <audio src="soundbank://soundlibrary/toys_games/board_games/board_games_01"/>
-
-questions=[
-    'what are your ears for? your options are, listening or eating'
-     ]
-answers=[
-   'listening'
-    ]
-finishedbite=[
-    'you are soooo sweet!!! Let me ask you a question.',
-    'wow!!! very good. Let me ask you a question.',
-    'Awesome!!! Let me ask you a question.'
-    ]
-
-intro=''' I am your meal friend Alexa. we will have meal together. I will have my bite and you have your bite. After finished your bite, you
-        should tell me finished friend. or if you are still having your bite, you should say me wait friend so that i will wait for you.
-        after each bytes i will be having games and surprises for you. So untill you finish your meal you will be having lots of surprises. Everyday you will be having
-        different games and surprises. So come lets have meal and have fun.'''
+intro=''' I am your meal friend Alexa. we will have meal together. I will have my bite and you have your bite. After finished your bite you
+        should tell me finished friend. or if you are still having your bite you should say me wait friend so that i will wait for you.
+        after three bytes i will be having surprise for you. so untill you finish your meal you will be having lots of surprises. so come lets have meal and have fun.'''
 
 ques=[
     'What are we going to have now?',
@@ -106,17 +92,15 @@ class LaunchRequestHandler(AbstractRequestHandler):
        # var1 = "Hi!!! I am your meal friend Alexa. Come, lets have meal together."
         attr = handler_input.attributes_manager.persistent_attributes
         attributes_are_present = "name" in attr
-        #name=attr['name']
+        name=attr['name']
         if  attributes_are_present:
-            name=attr['name']
-            speech_text="welcome back "+name+"!!!!"+ " Are you ready to have meal and play games with me? You can say me play "  
+            speech_text="welcome back "+name        
             return handler_input.response_builder.speak(speech_text).ask(speech_text).response
         else:
 
             ques1= 'Let me know about you, so that i will remember when you come back. '
-            ques2= 'My name is Alexa. What is your name?' 
-           # welcome_msg = random.choice(greetingsen1)
-            welcome_msg="Welcome to meal friend."
+            ques2= 'What is your name?' 
+            welcome_msg = random.choice(greetingsen1)
             ques_msg = random.choice(ques1)
             musiq_msg = random.choice(musiq)
        # speech_text = ('<emphasis level="strong">'+var1+'</emphasis> '
@@ -126,7 +110,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
        # speech_text = ('<speak><say-as interpret-as="interjection">'+var1+'</say-as>''<audio src="soundbank://soundlibrary/musical/amzn_sfx_drum_and_cymbal_01"/>'
         #             '<say-as interpret-as="interjection">'+var2+'</say-as>''<say-as interpret-as="interjection">'+var3+'</say-as></speak>')
         #speech_text = ('<speak>'+var1+'<audio src="soundbank://soundlibrary/musical/amzn_sfx_drum_and_cymbal_01"/>'+var2+'</speak>')
-            speech_text = ( welcome_msg+musiq_msg+ques1+'<break time="2s"/>'+ques2)
+            speech_text = ( welcome_msg+musiq_msg+ques1+'<break time="3s"/>'+ques2)
        # speech_text = ( "<speak> This is Alexa's regular speech, followed by the sound effect named Bear Groan Roar (1)."
   #'<audio src="soundbank://soundlibrary/animals/amzn_sfx_bear_groan_roar_01"/></speak>')
             return handler_input.response_builder.speak(speech_text).ask(speech_text).response
@@ -214,88 +198,20 @@ class NameIntentHandler(AbstractRequestHandler):
         name = slots["name"].value
         attributes_manager = handler_input.attributes_manager
         kid_attributes = {
-            "name": name,
-            "index": 0,
-            "count": 0,
-            "points": 0
+            "name": name
         }
         attributes_manager.persistent_attributes = kid_attributes
         attributes_manager.save_persistent_attributes()
-        #var1=random.choice(musiq)
-        var2= "Sweet name "+name
+        var1=random.choice(musiq)
+        var2= "Sweet name. "+name
         var3=" How old are you? "
-        speak_output = ( var2+'<break time="2s"/>'+ var3)
+        speak_output = ( var2+var1+'<break time="3s"/>'+ var3)
         return (
             handler_input.response_builder
                 .speak(speak_output)
                 .ask(speak_output)
                 .response
         )
-class FinishedIntentHandler(AbstractRequestHandler):
-    """Handler for Happy Intent."""
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("FinishedIntent")(handler_input)
-
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        #speak_output = "You are a good girl!!! lets have next byte."
-        num=random(0,len(questions)-1)
-        attributes_manager = handler_input.attributes_manager
-        kid_attributes = {
-            "index":num,
-            "count":0,
-            "points":0
-            
-        }
-        
-        attributes_manager.persistent_attributes = kid_attributes
-        attributes_manager.save_persistent_attributes()
-        #var1=random.choice(musiq)
-        var2= questions[kid_attributes["index"]]
-        speak_output= random.choice(finishedbite)+'<break time="1s"/>'+var2
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
-        )
-class QuizIntentHandler(AbstractRequestHandler):
-    """Handler for Name Intent."""
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("QuizIntent")(handler_input)
-
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        #var1=random.choice(musiq)
-       # attr = handler_input.attributes_manager.session_attributes
-        
-        slots = handler_input.request_envelope.request.intent.slots
-        ans = slots["list_of_answers"].value
-        attr = handler_input.attributes_manager.persistent_attributes
-        n=attr["index"]
-        ans1=answers[n]
-        #if ans==anwers[attr["quesindex"]]:
-        attr_ans= "index" in attr
-        if ans==ans1:
-            n=attr["index"]
-            speak_output ="Very good!!!! right answer"
-            return (
-                        handler_input.response_builder
-                            .speak(speak_output)
-                            .ask(speak_output)
-                            .response
-                    ) 
-        else:
-            speak_output = "Sorry!!! The correct answer is "+ans1
-            return (
-                        handler_input.response_builder
-                            .speak(speak_output)
-                            .ask(speak_output)
-                            .response
-                    ) 
-    
 class AgeIntentHandler(AbstractRequestHandler):
     """Handler for Which Food Intent."""
     def can_handle(self, handler_input):
@@ -304,28 +220,10 @@ class AgeIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        #var1=random.choice(musiq)
-        #var1= "Are you ready to have meal and play games with me? "
-        var2= "Thank You. I will remember you. "
-        var3=" Do you want to know more about me?  "
-        speak_output = ( var2+'<break time="2s"/>'+var3)
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
-        )
-class PlayIntentHandler(AbstractRequestHandler):
-    """Handler for Which Food Intent."""
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("PlayIntent")(handler_input)
-
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        #var1=random.choice(musiq)
-        var1= random.choice(ques)
-        speak_output = var1
+        var1=random.choice(musiq)
+        var2= "okay. "
+        var3=" Are you a boy or girl? "
+        speak_output = ( var2+'<break time="3s"/>'+var3)
         return (
             handler_input.response_builder
                 .speak(speak_output)
@@ -340,15 +238,14 @@ class YesIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        var1= " Are you ready to have meal and play games with me? "
-        speak_output = intro+'<break time="2s"/>'+var1
+        speak_output = intro
         return (
             handler_input.response_builder
                 .speak(speak_output)
                 .ask(speak_output)
                 .response
         )
-'''class GenderIntentHandler(AbstractRequestHandler):
+class GenderIntentHandler(AbstractRequestHandler):
     """Handler for Which Food Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
@@ -365,7 +262,7 @@ class YesIntentHandler(AbstractRequestHandler):
                 .speak(speak_output)
                 .ask(speak_output)
                 .response
-        )'''
+        )
 class WhichFoodIntentHandler(AbstractRequestHandler):
     """Handler for Which Food Intent."""
     def can_handle(self, handler_input):
@@ -375,7 +272,7 @@ class WhichFoodIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         var1=random.choice(foodsen)
-        var2= "did you finish your bite? you can say me finished, or wait."
+        var2= "did you finish your bite? you can say me yes, or wait."
         speak_output = ('<speak>'+var1+'<audio src="soundbank://soundlibrary/toys_games/board_games/board_games_01"/><break time="3s"/>'+var2+'</speak>')
         return (
             handler_input.response_builder
@@ -393,9 +290,8 @@ class HappyIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
       #  speak_output=random.choice(happysen)("<speak>"'<audio src="soundbank://soundlibrary/foley/amzn_sfx_swoosh_cartoon_fast_01"/></speak>')
-        quiz=random.choice(questions)
-        var1=random.choice(finishedbite)
-        speech_text= var1+'<break time="1s"/>'+quiz
+        speech_text = ( "<speak> wow!!! so tasty, lets have next byte. followed by the sound effect named Bear Groan Roar (1)."
+        '<audio src="soundbank://soundlibrary/animals/amzn_sfx_bear_groan_roar_01"/></speak>')
         #speak_output = ("<speak> wow!!! so tasty, lets have next byte."
         #'<audio src="soundbank://soundlibrary/foley/amzn_sfx_swoosh_cartoon_fast_01"/></speak>')
         return handler_input.response_builder.speak(speech_text).ask(speech_text).response
@@ -421,7 +317,22 @@ class TryAgainIntentHandler(AbstractRequestHandler):
                 .ask(speak_output)
                 .response
         )
+class FinishedIntentHandler(AbstractRequestHandler):
+    """Handler for Happy Intent."""
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return ask_utils.is_intent_name("FinishedIntent")(handler_input)
 
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        #speak_output = "You are a good girl!!! lets have next byte."
+        speak_output="I love you!!! You are sooooo sweet. we had fun. i will catch you in the next meal. Bye"
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                .ask(speak_output)
+                .response
+        )
 class HelloWorldIntentHandler(AbstractRequestHandler):
     """Handler for Hello World Intent."""
     def can_handle(self, handler_input):
@@ -550,8 +461,7 @@ sb.add_request_handler(HelloWorldIntentHandler())
 sb.add_request_handler(WhichFoodIntentHandler())
 sb.add_request_handler(NameIntentHandler())
 sb.add_request_handler(AgeIntentHandler())
-sb.add_request_handler(PlayIntentHandler())
-sb.add_request_handler(QuizIntentHandler())
+sb.add_request_handler(GenderIntentHandler())
 sb.add_request_handler(YesIntentHandler())
 sb.add_request_handler(HappyIntentHandler())
 sb.add_request_handler(TryAgainIntentHandler())
